@@ -1,7 +1,7 @@
-// main.js
-// rock-paper-scissors
+/* main.js */
+/* rock-paper-scissors */
 
-// Randomize computer selection
+/* Randomize computer selection */
 function computerPlay() {
     let play = Math.floor(Math.random() * 3);
     switch(play) {
@@ -11,15 +11,13 @@ function computerPlay() {
     }
 }
 
-// Main game function
 function game() {
 
-    // Playing one round and returning a winner (unless it's a tie)
+    /* Playing one round and returning the winner (unless it's a tie) */
     function playRound(playerSelection, computerSelection) {
 	gamesPlayed++;
-	if (playerSelection == computerSelection) {
-	    return 0
-	} else if (playerSelection == 'Rock') {
+	if (playerSelection == computerSelection) return 0
+	if (playerSelection == 'Rock') {
 	    switch(computerSelection) {
 		case('Scissors'): return 1
 		case('Paper'): return 2
@@ -37,12 +35,12 @@ function game() {
 	}
     }
 
-    // Initialize games played and scorekeeping
+    /* Initialize games played and scorekeeping */
     let gamesPlayed = 0;
     let playerScore = 0;
     let computerScore = 0;
 
-    // Main loop repeats until one player reaches a score of 5
+    /* Loop until one player reaches a score of 5 */
     while (playerScore < 5 && computerScore < 5) {
 	console.log(`Games played: ${gamesPlayed}`)
 	console.log(`Current score: Player: ${playerScore} vs Computer: ${computerScore}`)
@@ -50,17 +48,20 @@ function game() {
 	let playerSelection;
 	const computerSelection = computerPlay();
 
-	// Input validation
+	/* Input validation */
 	let validPlay = false;
 	while (validPlay == false) {
 	    playerSelection = prompt('Rock, paper or scissors?');
-	    playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase();
-	    if (playerSelection == 'Rock' || playerSelection == 'Paper' || playerSelection == 'Scissors') {
+	    playerSelection = playerSelection[0].toUpperCase() + 
+			      playerSelection.slice(1).toLowerCase(); // Ensure input is Capitalized
+	    if (playerSelection == 'Rock' || 
+		playerSelection == 'Paper' || 
+		playerSelection == 'Scissors') {
 		validPlay = true;
 	    }
 	}
 
-	// Start each round and determine the winner
+	/* Start each round, determine the winner and print to console */
 	switch(playRound(playerSelection, computerSelection)) {
 	    case 1:
 		playerScore++
