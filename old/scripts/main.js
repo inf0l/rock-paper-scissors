@@ -40,30 +40,28 @@ function game() {
     let playerScore = 0;
     let computerScore = 0;
 
-    const container = document.querySelector('#container');
+    /* Loop until one player reaches a score of 5 */
+    while (playerScore < 5 && computerScore < 5) {
+	console.log(`Games played: ${gamesPlayed}`)
+	console.log(`Current score: Player: ${playerScore} vs Computer: ${computerScore}`)
 
-    const rock = document.createElement('button');
-    rock.innerHTML = 'Rock';
-    rock.addEventListener('click', () => {
-	play('Rock', computerPlay());
-    });
-    container.appendChild(rock);
+	let playerSelection;
+	const computerSelection = computerPlay();
 
-    const paper = document.createElement('button');
-    paper.innerHTML = 'Paper';
-    paper.addEventListener('click', () => {
-	play('Paper', computerPlay());
-    }); 
-    container.appendChild(paper);
+	/* Input validation */
+	let validPlay = false;
+	while (validPlay == false) {
+	    playerSelection = prompt('Rock, paper or scissors?');
+	    playerSelection = playerSelection[0].toUpperCase() + 
+			      playerSelection.slice(1).toLowerCase(); // Ensure input is Capitalized
+	    if (playerSelection == 'Rock' || 
+		playerSelection == 'Paper' || 
+		playerSelection == 'Scissors') {
+		validPlay = true;
+	    }
+	}
 
-    const scissors = document.createElement('button');
-    scissors.innerHTML = 'Scissors';
-    scissors.addEventListener('click', () => {
-	play('Scissors', computerPlay());
-    });
-    container.appendChild(scissors);
-
-    function play(playerSelection, computerSelection) {
+	/* Start each round, determine the winner and print to console */
 	switch(playRound(playerSelection, computerSelection)) {
 	    case 1:
 		playerScore++
@@ -76,11 +74,8 @@ function game() {
 	    case 0:
 		console.log('That\'s a tie');
 		break;
-	    default:
-		console.log('Something went wrong...');
 	}
     }
 }
-
 
 game();
