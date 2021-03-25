@@ -1,4 +1,3 @@
-/* main.js */
 /* rock-paper-scissors */
 
 /* Randomize computer selection */
@@ -35,52 +34,104 @@ function game() {
 	}
     }
 
-    /* Initialize games played and scorekeeping */
-    let gamesPlayed = 0;
-    let playerScore = 0;
-    let computerScore = 0;
 
     const container = document.querySelector('#container');
+    const result = document.createElement('div');
 
-    const rock = document.createElement('button');
-    rock.innerHTML = 'Rock';
-    rock.addEventListener('click', () => {
-	play('Rock', computerPlay());
+    const currentPlay = document.createElement('p');
+    currentPlay.textContent = ' ';
+    result.appendChild(currentPlay);
+
+    const again = document.createElement('div');
+    const para_again = document.createElement('p');
+    para_again.textContent = 'Would you like to play again?';
+    again.appendChild(para_again);
+
+    const yesButton = document.createElement('button');
+    yesButton.innerHTML = 'Yes';
+    yesButton.addEventListener('click', () => {
+	container.removeChild(again);
+	game();
     });
-    container.appendChild(rock);
+    again.appendChild(yesButton);
 
-    const paper = document.createElement('button');
-    paper.innerHTML = 'Paper';
-    paper.addEventListener('click', () => {
-	play('Paper', computerPlay());
-    }); 
-    container.appendChild(paper);
-
-    const scissors = document.createElement('button');
-    scissors.innerHTML = 'Scissors';
-    scissors.addEventListener('click', () => {
-	play('Scissors', computerPlay());
+    const noButton = document.createElement('button');
+    noButton.innerHTML = 'No';
+    noButton.addEventListener('click', () => {
+	throw new Error('User clicked No.');
     });
-    container.appendChild(scissors);
+    again.appendChild(noButton);
 
+    /* Initialize games played and scorekeeping */
+    let gamesPlayed = 0;
+    const games = document.createElement('p');
+    games.textContent = `Games played: ${gamesPlayed}`;
+    result.appendChild(games);
+
+    let playerScore = 0;
+    let computerScore = 0;
+    const score = document.createElement('p');
+    score.textContent = `Current score: Player: ${playerScore} Computer: ${computerScore}`
+    result.appendChild(score);
+
+    /* Create buttons for each available hand */
+    const hands = ['Rock', 'Paper','Scissors'];
+    for (let i = 0; i < hands.length; i++) {
+	const btn = document.createElement('button');
+	btn.innerHTML = hands[i];
+	btn.id = hands[i];
+	btn.addEventListener('click', () => {
+	    play(`${hands[i]}`, computerPlay());
+	});
+	container.appendChild(btn);
+    }
+
+    /* Add results div below buttons */
+    container.appendChild(result);
+
+    /* Call playRound with button clicked */
     function play(playerSelection, computerSelection) {
 	switch(playRound(playerSelection, computerSelection)) {
 	    case 1:
 		playerScore++
-		console.log(`You Win! ${playerSelection} beats ${computerSelection}`);
+		currentPlay.textContent = `You Win! ${playerSelection} beats ${computerSelection}`;
+		games.textContent = `Games played: ${gamesPlayed}`;
+		score.textContent = `Current score: Player: ${playerScore} Computer: ${computerScore}`;
 		break;
 	    case 2:
 		computerScore++;
-		console.log(`You Lose! ${computerSelection} beats ${playerSelection}`);
+		currentPlay.textContent = `You Lose! ${computerSelection} beats ${playerSelection}`;
+		games.textContent = `Games played: ${gamesPlayed}`;
+		score.textContent = `Current score: Player: ${playerScore} Computer: ${computerScore}`;
 		break;
 	    case 0:
-		console.log('That\'s a tie');
+		currentPlay.textContent = 'That\'s a tie';
+		games.textContent = `Games played: ${gamesPlayed}`;
+		score.textContent = `Current score: Player: ${playerScore} Computer: ${computerScore}`;
 		break;
 	    default:
 		console.log('Something went wrong...');
 	}
+	if (playerScore == 5) {
+	    currentPlay.textContent = 'Congratulations! You won!';
+	    games.textContent = '';
+	    score.textContent = `Final score: Player: ${playerScore} Computer: ${computerScore}`;
+	    setTimeout(() => { return playAgain(); }, 2000);
+	} else if (computerScore == 5) {
+	    currentPlay.textContent = 'You lost.. better luck next time';
+	    games.textContent = '';
+	    score.textContent = `Final score: Player: ${playerScore} Computer: ${computerScore}`;
+	    setTimeout(() => { return playAgain(); }, 2000);
+	}
+    }
+
+    /* Ask to play again after finished game. */
+    function playAgain() {
+	while (container.firstChild) {
+	    container.removeChild(container.firstChild);
+	}
+	container.appendChild(again);
+
     }
 }
-
-
 game();
