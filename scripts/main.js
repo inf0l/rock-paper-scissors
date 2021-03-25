@@ -42,25 +42,25 @@ function game() {
     currentPlay.textContent = ' ';
     result.appendChild(currentPlay);
 
-    const again = document.createElement('div');
-    const para_again = document.createElement('p');
-    para_again.textContent = 'Would you like to play again?';
-    again.appendChild(para_again);
+    const startOver = document.createElement('div');
+    const para_startOver = document.createElement('p');
+    para_startOver.textContent = 'Would you like to play again?';
+    startOver.appendChild(para_startOver);
 
     const yesButton = document.createElement('button');
     yesButton.innerHTML = 'Yes';
     yesButton.addEventListener('click', () => {
-	container.removeChild(again);
+	container.removeChild(startOver);
 	game();
     });
-    again.appendChild(yesButton);
+    startOver.appendChild(yesButton);
 
     const noButton = document.createElement('button');
     noButton.innerHTML = 'No';
     noButton.addEventListener('click', () => {
 	throw new Error('User clicked No.');
     });
-    again.appendChild(noButton);
+    startOver.appendChild(noButton);
 
     /* Initialize games played and scorekeeping */
     let gamesPlayed = 0;
@@ -130,7 +130,7 @@ function game() {
 	while (container.firstChild) {
 	    container.removeChild(container.firstChild);
 	}
-	container.appendChild(again);
+	container.appendChild(startOver);
 
     }
 }
